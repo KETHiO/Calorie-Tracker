@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>FitForge</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>FitForge</h1>
+
+<div class="dashboard">
+
+<h2>Daily Calories</h2>
+
+<p>Goal: <span id="goal">2200</span></p>
+
+<p>Consumed: <span id="consumed">0</span></p>
+
+<p>Remaining: <span id="remaining">2200</span></p>
+
+</div>
+
+<hr>
+
+<h2>Add Food</h2>
+
+<input id="foodName" placeholder="Food name">
+
+<input id="foodCalories" placeholder="Calories">
+
+<button onclick="addFood()">Add Food</button>
+
+<ul id="foodList"></ul>
+
+<hr>
+
+<h2>Workout Log</h2>
+
+<input id="exerciseName" placeholder="Exercise">
+
+<input id="sets" placeholder="Sets">
+
+<input id="reps" placeholder="Reps">
+
+<button onclick="addWorkout()">Add Workout</button>
+
+<ul id="workoutList"></ul>
+
+<script src="app.js"></script>
+
+</body>
+
+</html>
