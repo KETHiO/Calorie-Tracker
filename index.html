@@ -10,6 +10,8 @@
 
 <h1>FitForge</h1>
 
+<div id="dashboardPage">
+
 <div class="dashboard">
 
 <h2>Daily Calories</h2>
@@ -26,7 +28,9 @@
 
 </div>
 
-<hr>
+</div>
+
+<div id="foodPage" style="display:none">
 
 <h2>Add Food</h2>
 
@@ -38,7 +42,9 @@
 
 <ul id="foodList"></ul>
 
-<hr>
+</div>
+
+<div id="workoutPage" style="display:none">
 
 <h2>Workout Log</h2>
 
@@ -52,15 +58,29 @@
 
 <ul id="workoutList"></ul>
 
-<hr>
+</div>
 
-<h2>AI Fitness Coach</h2>
+<div id="profilePage" style="display:none">
 
-<input id="question" placeholder="Ask a fitness question...">
+<h2>Profile</h2>
 
-<button onclick="askAI()">Ask AI</button>
+<p id="usernameDisplay"></p>
 
-<p id="aiResponse"></p>
+<button onclick="logout()">Logout</button>
+
+</div>
+
+<div class="navBar">
+
+<button onclick="showPage('dashboardPage')">Home</button>
+
+<button onclick="showPage('foodPage')">Food</button>
+
+<button onclick="showPage('workoutPage')">Workouts</button>
+
+<button onclick="showPage('profilePage')">Profile</button>
+
+</div>
 
 <script src="app.js"></script>
 
