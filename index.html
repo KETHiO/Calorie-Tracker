@@ -4,11 +4,16 @@
 <head>
 <title>FitForge</title>
 <link rel="stylesheet" href="style.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+
 </head>
 
 <body>
 
 <h1>🏋️ FitForge</h1>
+
+<!-- DASHBOARD -->
 
 <div id="dashboardPage">
 
@@ -16,57 +21,37 @@
 
 <h2>Daily Calories</h2>
 
-<div class="ringContainer">
-
-<svg width="160" height="160">
-
-<circle cx="80" cy="80" r="70" stroke="#eee" stroke-width="12" fill="none"/>
-
-<circle id="progressRing"
-cx="80"
-cy="80"
-r="70"
-stroke="#00c6ff"
-stroke-width="12"
-fill="none"
-stroke-dasharray="440"
-stroke-dashoffset="440"/>
-
-</svg>
-
-<div class="ringText">
-<p id="consumed">0</p>
-<span>cal</span>
-</div>
-
-</div>
-
-<p>Goal: <span id="goal">2200</span></p>
-<p>Remaining: <span id="remaining">2200</span></p>
+<p>Consumed: <span id="consumed">0</span></p>
 
 </div>
 
 </div>
 
 
+
+<!-- FOOD PAGE -->
 
 <div id="foodPage" style="display:none">
 
 <h2>Add Food</h2>
 
 <input id="foodName" placeholder="Food name">
+
 <input id="foodCalories" placeholder="Calories">
-<input id="foodProtein" placeholder="Protein (g)">
-<input id="foodCarbs" placeholder="Carbs (g)">
-<input id="foodFat" placeholder="Fat (g)">
 
 <button onclick="addFood()">Add Food</button>
+
+<button onclick="startScanner()">📷 Scan Barcode</button>
+
+<div id="scanner"></div>
 
 <ul id="foodList"></ul>
 
 </div>
 
 
+
+<!-- WORKOUT BUILDER -->
 
 <div id="workoutPage" style="display:none">
 
@@ -84,46 +69,43 @@ stroke-dashoffset="440"/>
 
 <button onclick="generateWorkout()">Generate Workout</button>
 
+<button onclick="startWorkout()">Start Workout</button>
+
 <ul id="generatedWorkout"></ul>
 
 </div>
 
 
 
-<div id="exerciseDemo" class="demoPanel" style="display:none">
+<!-- WORKOUT SESSION -->
 
-<h2 id="demoTitle"></h2>
+<div id="sessionPage" style="display:none">
 
-<video id="demoVideo" controls width="100%"></video>
+<h2 id="sessionExercise"></h2>
 
-<p id="demoMuscle"></p>
+<p>Sets Completed: <span id="setCounter">0</span>/3</p>
 
-<p id="demoInstructions"></p>
+<button onclick="completeSet()">Complete Set</button>
 
-<button onclick="closeDemo()">Close</button>
+<h3 id="timer">60</h3>
 
-</div>
+<button onclick="startTimer()">Start Rest</button>
 
-
-
-<div id="profilePage" style="display:none">
-
-<h2>Profile</h2>
-
-<p id="usernameDisplay"></p>
-
-<button onclick="logout()">Logout</button>
+<button onclick="nextExercise()">Next Exercise</button>
 
 </div>
 
 
+
+<!-- NAVIGATION -->
 
 <div class="navBar">
 
-<button onclick="showPage('dashboardPage')">🏠<br>Home</button>
-<button onclick="showPage('foodPage')">🍎<br>Food</button>
-<button onclick="showPage('workoutPage')">💪<br>Workout</button>
-<button onclick="showPage('profilePage')">👤<br>Profile</button>
+<button onclick="showPage('dashboardPage')">🏠 Home</button>
+
+<button onclick="showPage('foodPage')">🍎 Food</button>
+
+<button onclick="showPage('workoutPage')">💪 Workout</button>
 
 </div>
 
