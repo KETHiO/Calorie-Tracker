@@ -11,11 +11,13 @@ document.getElementById("consumed").innerText = consumed
 
 document.getElementById("remaining").innerText = goal - consumed
 
-let percent = (consumed/goal)*100
+let percent = consumed / goal
 
-if(document.getElementById("progress")){
-document.getElementById("progress").style.width = percent + "%"
-}
+let circumference = 440
+
+let offset = circumference - (percent * circumference)
+
+document.getElementById("progressRing").style.strokeDashoffset = offset
 
 }
 
@@ -62,17 +64,12 @@ function addFood(){
 let name=document.getElementById("foodName").value
 let calories=document.getElementById("foodCalories").value
 
-let food={
+foods.push({
 name:name,
 calories:calories
-}
-
-foods.push(food)
+})
 
 localStorage.setItem("foods",JSON.stringify(foods))
-
-document.getElementById("foodName").value=""
-document.getElementById("foodCalories").value=""
 
 renderFoods()
 
@@ -94,44 +91,28 @@ workouts.push(workout)
 
 localStorage.setItem("workouts",JSON.stringify(workouts))
 
-document.getElementById("exerciseName").value=""
-document.getElementById("sets").value=""
-document.getElementById("reps").value=""
-
 renderWorkouts()
 
 }
 
-function askAI(){
+function showPage(page){
 
-let question=document.getElementById("question").value.toLowerCase()
+document.getElementById("dashboardPage").style.display="none"
+document.getElementById("foodPage").style.display="none"
+document.getElementById("workoutPage").style.display="none"
+document.getElementById("profilePage").style.display="none"
 
-let response=""
+document.getElementById(page).style.display="block"
 
-if(question.includes("abs")){
-response="To reveal abs: stay in a calorie deficit, train core 3 times per week, and keep protein high."
 }
 
-else if(question.includes("protein")){
-response="A good protein target is about 1.6 to 2.2 grams per kg of body weight daily."
-}
+function logout(){
 
-else if(question.includes("fat loss")){
-response="For fat loss focus on a calorie deficit, strength training, and consistent cardio."
-}
+localStorage.removeItem("user")
 
-else if(question.includes("workout")){
-response="A balanced routine includes push, pull, legs, and core training during the week."
-}
-
-else{
-response="Stay consistent with nutrition and training. Progress comes from small daily habits."
-}
-
-document.getElementById("aiResponse").innerText=response
+window.location="login.html"
 
 }
 
 renderFoods()
-
 renderWorkouts()
