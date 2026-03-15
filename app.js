@@ -1,46 +1,36 @@
-const workouts = {
+const exerciseLibrary = [
 
-chest:[
-"Bench Press",
-"Incline Dumbbell Press",
-"Chest Fly",
-"Tricep Pushdown"
-],
+{name:"Bench Press",muscle:"chest",equipment:"barbell",difficulty:"intermediate"},
+{name:"Incline Dumbbell Press",muscle:"chest",equipment:"dumbbell",difficulty:"intermediate"},
+{name:"Chest Fly",muscle:"chest",equipment:"machine",difficulty:"beginner"},
 
-shoulders:[
-"Overhead Press",
-"Lateral Raise",
-"Arnold Press",
-"Face Pull"
-],
+{name:"Pull-ups",muscle:"back",equipment:"bodyweight",difficulty:"intermediate"},
+{name:"Lat Pulldown",muscle:"back",equipment:"machine",difficulty:"beginner"},
+{name:"Barbell Row",muscle:"back",equipment:"barbell",difficulty:"intermediate"},
 
-arms:[
-"Barbell Curl",
-"Hammer Curl",
-"Tricep Pushdown",
-"Skull Crushers"
-],
+{name:"Squat",muscle:"legs",equipment:"barbell",difficulty:"intermediate"},
+{name:"Leg Press",muscle:"legs",equipment:"machine",difficulty:"beginner"},
+{name:"Lunges",muscle:"legs",equipment:"bodyweight",difficulty:"beginner"},
 
-legs:[
-"Squat",
-"Leg Press",
-"Lunges",
-"Romanian Deadlift"
+{name:"Overhead Press",muscle:"shoulders",equipment:"barbell",difficulty:"intermediate"},
+{name:"Lateral Raise",muscle:"shoulders",equipment:"dumbbell",difficulty:"beginner"},
+
+{name:"Barbell Curl",muscle:"arms",equipment:"barbell",difficulty:"beginner"},
+{name:"Hammer Curl",muscle:"arms",equipment:"dumbbell",difficulty:"beginner"},
+{name:"Tricep Pushdown",muscle:"arms",equipment:"cable",difficulty:"beginner"}
+
 ]
-
-}
-
 
 
 let recovery = JSON.parse(localStorage.getItem("recovery")) || {
 
 chest:100,
+back:100,
+legs:100,
 shoulders:100,
-arms:100,
-legs:100
+arms:100
 
 }
-
 
 
 let history = JSON.parse(localStorage.getItem("history")) || {}
@@ -51,7 +41,9 @@ function generateWorkout(){
 
 let muscle=document.getElementById("muscleSelect").value
 
-buildWorkout(muscle)
+let exercises = exerciseLibrary.filter(e => e.muscle === muscle)
+
+buildWorkout(exercises)
 
 highlightMuscle(muscle)
 
@@ -65,37 +57,35 @@ updateRecovery()
 
 
 
-function buildWorkout(muscle){
-
-let plan=workouts[muscle]
+function buildWorkout(exercises){
 
 let list=document.getElementById("generatedWorkout")
 
 list.innerHTML=""
 
-let title=document.createElement("h3")
+exercises.forEach(exercise=>{
 
-title.innerText=muscle.toUpperCase()+" WORKOUT"
-
-list.appendChild(title)
-
-plan.forEach(exercise=>{
-
-let lastWeight = history[exercise] || 20
+let lastWeight = history[exercise.name] || 20
 
 let suggested = Math.round((lastWeight + 2.5)*10)/10
 
 let li=document.createElement("li")
 
 li.innerHTML = `
-${exercise}
+<strong>${exercise.name}</strong>
+<br>
+Muscle: ${exercise.muscle}
+<br>
+Equipment: ${exercise.equipment}
+<br>
+Difficulty: ${exercise.difficulty}
 <br>
 Last: ${lastWeight} kg
 <br>
 Suggested: ${suggested} kg
 <br>
-<input placeholder="Weight used (kg)" id="${exercise}">
-<button onclick="saveWeight('${exercise}',${suggested})">Save</button>
+<input placeholder="Weight used (kg)" id="${exercise.name}">
+<button onclick="saveWeight('${exercise.name}',${suggested})">Save</button>
 `
 
 list.appendChild(li)
@@ -146,7 +136,9 @@ best=muscle
 
 }
 
-buildWorkout(best)
+let exercises = exerciseLibrary.filter(e => e.muscle === best)
+
+buildWorkout(exercises)
 
 highlightMuscle(best)
 
@@ -164,7 +156,9 @@ m.classList.remove("active")
 
 })
 
-document.getElementById(muscle).classList.add("active")
+let element=document.getElementById(muscle)
+
+if(element) element.classList.add("active")
 
 }
 
@@ -175,6 +169,8 @@ function updateRecovery(){
 for(let muscle in recovery){
 
 let element=document.getElementById(muscle)
+
+if(!element) continue
 
 let value=recovery[muscle]
 
@@ -227,11 +223,8 @@ updateRecovery()
 function showPage(page){
 
 document.getElementById("dashboardPage").style.display="none"
-
 document.getElementById("foodPage").style.display="none"
-
 document.getElementById("workoutPage").style.display="none"
-
 document.getElementById("profilePage").style.display="none"
 
 document.getElementById(page).style.display="block"
