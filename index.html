@@ -2,7 +2,13 @@
 <html>
 
 <head>
+
 <title>FitForge</title>
+
+<link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#0072ff">
+
 <link rel="stylesheet" href="style.css">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
@@ -12,8 +18,6 @@
 <body>
 
 <h1>🏋️ FitForge</h1>
-
-<!-- DASHBOARD -->
 
 <div id="dashboardPage">
 
@@ -28,8 +32,6 @@
 </div>
 
 
-
-<!-- FOOD PAGE -->
 
 <div id="foodPage" style="display:none">
 
@@ -50,8 +52,6 @@
 </div>
 
 
-
-<!-- WORKOUT BUILDER -->
 
 <div id="workoutPage" style="display:none">
 
@@ -77,8 +77,6 @@
 
 
 
-<!-- WORKOUT SESSION -->
-
 <div id="sessionPage" style="display:none">
 
 <h2 id="sessionExercise"></h2>
@@ -97,8 +95,6 @@
 
 
 
-<!-- NAVIGATION -->
-
 <div class="navBar">
 
 <button onclick="showPage('dashboardPage')">🏠 Home</button>
@@ -110,6 +106,12 @@
 </div>
 
 <script src="app.js"></script>
+
+<script>
+if ('serviceWorker' in navigator) {
+navigator.serviceWorker.register('sw.js');
+}
+</script>
 
 </body>
 
