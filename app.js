@@ -118,6 +118,39 @@ window.location="login.html"
 }
 
 
+
+async function lookupFood(barcode){
+
+let url = "https://world.openfoodfacts.org/api/v0/product/" + barcode + ".json"
+
+let response = await fetch(url)
+
+let data = await response.json()
+
+if(data.status === 1){
+
+let product = data.product
+
+let name = product.product_name || "Unknown food"
+
+let calories = product.nutriments["energy-kcal_100g"] || 0
+
+document.getElementById("foodName").value = name
+
+document.getElementById("foodCalories").value = calories
+
+alert("Food detected: " + name)
+
+}else{
+
+alert("Food not found in database")
+
+}
+
+}
+
+
+
 function startScanner(){
 
 Quagga.init({
@@ -145,11 +178,11 @@ Quagga.start()
 
 Quagga.onDetected(function(data){
 
-let code=data.codeResult.code
-
-alert("Barcode detected: "+code)
+let barcode=data.codeResult.code
 
 Quagga.stop()
+
+lookupFood(barcode)
 
 })
 
