@@ -1,0 +1,27 @@
+<svg viewBox="0 0 300 600" xmlns="http://www.w3.org/2000/svg">
+
+<g fill="#444">
+
+<circle cx="150" cy="60" r="30"/>
+<rect x="120" y="90" width="60" height="120"/>
+<rect x="90" y="120" width="30" height="140"/>
+<rect x="180" y="120" width="30" height="140"/>
+<rect x="120" y="210" width="60" height="180"/>
+<rect x="120" y="390" width="25" height="160"/>
+<rect x="155" y="390" width="25" height="160"/>
+
+</g>
+
+<!-- muscles -->
+
+<g fill="red" opacity="0.2">
+
+<rect id="chest" x="115" y="120" width="70" height="40"/>
+<rect id="shoulders" x="95" y="100" width="110" height="30"/>
+<rect id="arms" x="90" y="140" width="120" height="80"/>
+<rect id="abs" x="120" y="170" width="60" height="70"/>
+<rect id="quads" x="120" y="250" width="60" height="100"/>
+
+</g>
+
+</svg>
