@@ -19,6 +19,17 @@ let currentExercise=0
 let sets=0
 
 
+
+function tapMuscle(muscle){
+
+document.getElementById("muscleSelect").value = muscle
+
+generateWorkout()
+
+}
+
+
+
 function logout(){
 
 localStorage.removeItem("user")
@@ -26,6 +37,7 @@ localStorage.removeItem("user")
 window.location="login.html"
 
 }
+
 
 
 function addFood(){
@@ -41,6 +53,7 @@ renderFoods()
 updateCalories()
 
 }
+
 
 
 function renderFoods(){
@@ -62,6 +75,7 @@ list.appendChild(li)
 }
 
 
+
 function updateCalories(){
 
 let consumed=foods.reduce((sum,f)=>sum+Number(f.calories),0)
@@ -76,6 +90,7 @@ let offset=circumference-(percent*circumference)
 document.getElementById("progressRing").style.strokeDashoffset=offset
 
 }
+
 
 
 function startScanner(){
@@ -104,11 +119,10 @@ Quagga.stop()
 }
 
 
+
 function generateWorkout(){
 
 let muscle=document.getElementById("muscleSelect").value
-
-highlightMuscle(muscle)
 
 workoutPlan=exercises[muscle]
 
@@ -129,32 +143,6 @@ list.appendChild(li)
 }
 
 
-function highlightMuscle(muscle){
-
-document.querySelectorAll(".muscle").forEach(m=>m.classList.remove("active"))
-
-let target=document.getElementById(muscle)
-
-if(target) target.classList.add("active")
-
-}
-
-
-function showFront(){
-
-document.getElementById("frontBody").style.display="block"
-document.getElementById("backBody").style.display="none"
-
-}
-
-
-function showBack(){
-
-document.getElementById("frontBody").style.display="none"
-document.getElementById("backBody").style.display="block"
-
-}
-
 
 function startWorkout(){
 
@@ -168,6 +156,7 @@ loadExercise()
 }
 
 
+
 function loadExercise(){
 
 document.getElementById("sessionExercise").innerText=workoutPlan[currentExercise]
@@ -177,12 +166,14 @@ document.getElementById("setCounter").innerText=0
 }
 
 
+
 function completeSet(){
 
 sets++
 document.getElementById("setCounter").innerText=sets
 
 }
+
 
 
 function nextExercise(){
@@ -202,6 +193,7 @@ return
 loadExercise()
 
 }
+
 
 
 let timerInterval
@@ -227,6 +219,7 @@ clearInterval(timerInterval)
 },1000)
 
 }
+
 
 
 function showPage(page){
