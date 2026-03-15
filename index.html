@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 
 <title>FitForge</title>
 
+<link rel="stylesheet" href="style.css">
 <link rel="manifest" href="manifest.json">
 
 <meta name="theme-color" content="#0072ff">
-
-<link rel="stylesheet" href="style.css">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
 
@@ -19,27 +17,57 @@
 
 <h1>🏋️ FitForge</h1>
 
+<!-- DASHBOARD -->
+
 <div id="dashboardPage">
 
 <div class="dashboard">
 
 <h2>Daily Calories</h2>
 
-<p>Consumed: <span id="consumed">0</span></p>
+<div class="ringContainer">
+
+<svg width="160" height="160">
+
+<circle cx="80" cy="80" r="70" stroke="#eee" stroke-width="12" fill="none"/>
+
+<circle id="progressRing"
+cx="80"
+cy="80"
+r="70"
+stroke="#00c6ff"
+stroke-width="12"
+fill="none"
+stroke-dasharray="440"
+stroke-dashoffset="440"/>
+
+</svg>
+
+<div class="ringText">
+
+<p id="consumed">0</p>
+<span>cal</span>
+
+</div>
+
+</div>
 
 </div>
 
 </div>
 
 
+<!-- FOOD PAGE -->
 
 <div id="foodPage" style="display:none">
 
 <h2>Add Food</h2>
 
 <input id="foodName" placeholder="Food name">
-
 <input id="foodCalories" placeholder="Calories">
+<input id="foodProtein" placeholder="Protein">
+<input id="foodCarbs" placeholder="Carbs">
+<input id="foodFat" placeholder="Fat">
 
 <button onclick="addFood()">Add Food</button>
 
@@ -52,18 +80,31 @@
 </div>
 
 
+<!-- WORKOUT PAGE -->
 
 <div id="workoutPage" style="display:none">
 
-<h2>Workout Builder</h2>
+<h2>Muscle Trainer</h2>
+
+<div class="bodyContainer">
+
+<img src="https://i.imgur.com/8QfQG8P.png" class="body">
+
+<div class="muscle chest" id="chest"></div>
+<div class="muscle shoulders" id="shoulders"></div>
+<div class="muscle arms" id="arms"></div>
+<div class="muscle legs" id="legs"></div>
+
+</div>
+
+<h2>Workout Generator</h2>
 
 <select id="muscleSelect">
 
 <option value="chest">Chest</option>
-<option value="back">Back</option>
-<option value="legs">Legs</option>
 <option value="shoulders">Shoulders</option>
 <option value="arms">Arms</option>
+<option value="legs">Legs</option>
 
 </select>
 
@@ -76,6 +117,7 @@
 </div>
 
 
+<!-- SESSION -->
 
 <div id="sessionPage" style="display:none">
 
@@ -94,25 +136,17 @@
 </div>
 
 
+<!-- NAV -->
 
 <div class="navBar">
 
 <button onclick="showPage('dashboardPage')">🏠 Home</button>
-
 <button onclick="showPage('foodPage')">🍎 Food</button>
-
 <button onclick="showPage('workoutPage')">💪 Workout</button>
 
 </div>
 
 <script src="app.js"></script>
 
-<script>
-if ('serviceWorker' in navigator) {
-navigator.serviceWorker.register('sw.js');
-}
-</script>
-
 </body>
-
 </html>
