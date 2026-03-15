@@ -1,91 +1,52 @@
-const exerciseLibrary = [
+let foods = JSON.parse(localStorage.getItem("foods")) || []
 
-{
-name:"Bench Press",
-muscle:"chest",
-video:"https://www.w3schools.com/html/mov_bbb.mp4",
-instructions:"Lie on a bench and press the bar upward until arms are extended."
-},
+const exerciseLibrary = {
 
-{
-name:"Incline Dumbbell Press",
-muscle:"chest",
-video:"https://www.w3schools.com/html/mov_bbb.mp4",
-instructions:"Press dumbbells upward on an incline bench."
-},
+chest:["Bench Press","Incline Dumbbell Press","Chest Fly"],
 
-{
-name:"Pull-ups",
-muscle:"back",
-video:"https://www.w3schools.com/html/mov_bbb.mp4",
-instructions:"Pull your body upward until your chin clears the bar."
-},
+back:["Pull-ups","Lat Pulldown","Barbell Row"],
 
-{
-name:"Lat Pulldown",
-muscle:"back",
-video:"https://www.w3schools.com/html/mov_bbb.mp4",
-instructions:"Pull the bar down to your chest while seated."
-},
+legs:["Squat","Leg Press","Lunges"],
 
-{
-name:"Squat",
-muscle:"legs",
-video:"https://www.w3schools.com/html/mov_bbb.mp4",
-instructions:"Lower your hips until thighs are parallel to the ground."
-},
+shoulders:["Overhead Press","Lateral Raise","Arnold Press"],
 
-{
-name:"Lunges",
-muscle:"legs",
-video:"https://www.w3schools.com/html/mov_bbb.mp4",
-instructions:"Step forward and lower your back knee toward the ground."
-},
+arms:["Barbell Curl","Hammer Curl","Tricep Pushdown"]
 
-{
-name:"Overhead Press",
-muscle:"shoulders",
-video:"https://www.w3schools.com/html/mov_bbb.mp4",
-instructions:"Press the bar overhead until arms are extended."
-},
-
-{
-name:"Lateral Raise",
-muscle:"shoulders",
-video:"https://www.w3schools.com/html/mov_bbb.mp4",
-instructions:"Raise dumbbells to shoulder height with straight arms."
-},
-
-{
-name:"Barbell Curl",
-muscle:"arms",
-video:"https://www.w3schools.com/html/mov_bbb.mp4",
-instructions:"Curl the bar toward your chest while keeping elbows tucked."
 }
 
-]
+let workoutPlan=[]
+let currentExercise=0
+let sets=0
 
 
 
-function generateWorkout(){
+/* FOOD SYSTEM */
 
-let muscle=document.getElementById("muscleSelect").value
+function addFood(){
 
-let exercises = exerciseLibrary.filter(e => e.muscle === muscle)
+let name=document.getElementById("foodName").value
 
-let list=document.getElementById("generatedWorkout")
+let calories=document.getElementById("foodCalories").value
+
+foods.push({name,calories})
+
+localStorage.setItem("foods",JSON.stringify(foods))
+
+renderFoods()
+
+}
+
+function renderFoods(){
+
+let list=document.getElementById("foodList")
 
 list.innerHTML=""
 
-exercises.forEach(exercise=>{
+foods.forEach(food=>{
 
 let li=document.createElement("li")
 
-li.innerHTML = `
-<strong>${exercise.name}</strong>
-<br>
-<button onclick="openDemo('${exercise.name}')">View Demo</button>
-`
+li.innerText=food.name+" - "+food.calories+" kcal"
 
 list.appendChild(li)
 
@@ -95,41 +56,171 @@ list.appendChild(li)
 
 
 
-function openDemo(name){
+/* BARCODE SCANNER */
 
-let exercise = exerciseLibrary.find(e => e.name === name)
+function startScanner(){
 
-document.getElementById("demoTitle").innerText = exercise.name
+Quagga.init({
 
-document.getElementById("demoMuscle").innerText =
-"Primary Muscle: " + exercise.muscle
+inputStream:{
+name:"Live",
+type:"LiveStream",
+target:document.querySelector("#scanner")
+},
 
-document.getElementById("demoInstructions").innerText =
-exercise.instructions
+decoder:{
+readers:["ean_reader"]
+}
 
-document.getElementById("demoVideo").src = exercise.video
+},function(err){
 
-document.getElementById("exerciseDemo").style.display="block"
+if(err){console.log(err);return}
+
+Quagga.start()
+
+})
+
+Quagga.onDetected(function(data){
+
+let code=data.codeResult.code
+
+alert("Barcode: "+code)
+
+Quagga.stop()
+
+})
 
 }
 
 
 
-function closeDemo(){
+/* WORKOUT BUILDER */
 
-document.getElementById("exerciseDemo").style.display="none"
+function generateWorkout(){
+
+let muscle=document.getElementById("muscleSelect").value
+
+workoutPlan=exerciseLibrary[muscle]
+
+let list=document.getElementById("generatedWorkout")
+
+list.innerHTML=""
+
+workoutPlan.forEach(exercise=>{
+
+let li=document.createElement("li")
+
+li.innerText=exercise+" | 3 sets x 10 reps"
+
+list.appendChild(li)
+
+})
 
 }
 
 
+
+/* WORKOUT SESSION */
+
+function startWorkout(){
+
+currentExercise=0
+
+sets=0
+
+showPage("sessionPage")
+
+loadExercise()
+
+}
+
+function loadExercise(){
+
+document.getElementById("sessionExercise").innerText=
+
+workoutPlan[currentExercise]
+
+document.getElementById("setCounter").innerText="0"
+
+sets=0
+
+}
+
+function completeSet(){
+
+sets++
+
+document.getElementById("setCounter").innerText=sets
+
+if(sets>=3){
+
+alert("Exercise complete!")
+
+}
+
+}
+
+function nextExercise(){
+
+currentExercise++
+
+if(currentExercise>=workoutPlan.length){
+
+alert("Workout complete!")
+
+showPage("dashboardPage")
+
+return
+
+}
+
+loadExercise()
+
+}
+
+
+
+/* REST TIMER */
+
+let timerInterval
+
+function startTimer(){
+
+let time=60
+
+document.getElementById("timer").innerText=time
+
+clearInterval(timerInterval)
+
+timerInterval=setInterval(()=>{
+
+time--
+
+document.getElementById("timer").innerText=time
+
+if(time<=0){
+
+clearInterval(timerInterval)
+
+}
+
+},1000)
+
+}
+
+
+
+/* NAVIGATION */
 
 function showPage(page){
 
 document.getElementById("dashboardPage").style.display="none"
 document.getElementById("foodPage").style.display="none"
 document.getElementById("workoutPage").style.display="none"
-document.getElementById("profilePage").style.display="none"
+document.getElementById("sessionPage").style.display="none"
 
 document.getElementById(page).style.display="block"
 
 }
+
+renderFoods()
